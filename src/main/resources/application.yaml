@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: orders
+  datasource:
+    url: jdbc:mysql://localhost:3306/orders?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
