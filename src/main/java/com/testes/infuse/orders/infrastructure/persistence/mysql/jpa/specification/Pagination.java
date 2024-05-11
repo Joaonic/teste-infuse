@@ -1,5 +1,6 @@
 package com.testes.infuse.orders.infrastructure.persistence.mysql.jpa.specification;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +14,10 @@ import java.util.Map;
 @Getter
 @Setter
 public class Pagination {
+    @JsonProperty("page_number")
     private Integer pageNumber;
+
+    @JsonProperty("page_size")
     private int pageSize;
     private String sort;
     private Map<String, Sort.Direction> sortMap;

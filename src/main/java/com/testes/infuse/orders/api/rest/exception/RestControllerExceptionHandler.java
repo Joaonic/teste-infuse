@@ -22,6 +22,12 @@ import java.util.List;
 @RestControllerAdvice
 public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleInternalError(Exception e) {
+        return new ErrorResponse("Internal Error!", e.getMessage(), null);
+    }
+
     @ExceptionHandler(InvalidDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidDataException(InvalidDataException e) {
@@ -45,8 +51,16 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
 
         List<ValidationField> validationFields = new ArrayList<>();
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        fieldErrors.forEach(fieldError -> validationFields.add(new ValidationField(fieldError.getDefaultMessage(), fieldError.getField(), fieldError.getRejectedValue())));
-
+        fieldErrors.forEach(fieldError -> validationFields.add(
+                        new ValidationField(
+                                fieldError.getDefaultMessage(),
+                                fieldError.getField().replace("get", "")
+                                        .replaceAll("([A-Z]+)([A-Z][a-z])", "$1_$2")
+                                        .replaceAll("([a-z])([A-Z])", "$1_$2"),
+                                fieldError.getRejectedValue()
+                        )
+                )
+        );
 
         return new ResponseEntity<>(new ErrorResponse("Fields invalid!", "Validate the fields and try again.", validationFields), HttpStatus.BAD_REQUEST);
     }

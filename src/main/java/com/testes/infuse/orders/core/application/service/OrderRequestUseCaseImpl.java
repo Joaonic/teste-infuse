@@ -5,7 +5,8 @@ import com.testes.infuse.orders.core.domain.exception.InvalidDataException;
 import com.testes.infuse.orders.core.domain.repository.filter.OrderFilter;
 import com.testes.infuse.orders.core.domain.service.OrderService;
 import com.testes.infuse.orders.core.port.in.OrderRequestUseCase;
-import com.testes.infuse.orders.core.port.in.dto.OrderDto;
+import com.testes.infuse.orders.core.port.in.dto.OrderRequest;
+import com.testes.infuse.orders.core.port.in.dto.OrderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +39,8 @@ public class OrderRequestUseCaseImpl implements OrderRequestUseCase {
 
 
     @Override
-    public OrderDto createOrder(OrderDto orderDto) {
-        var order = mapper.orderDtoToEntity(orderDto);
+    public OrderResponseDto createOrder(OrderRequest orderDto) {
+        var order = mapper.orderRequestToEntity(orderDto);
 
         order.setTotalPrice(getTotalPrice(order.getUnitPrice(), order.getQuantity()));
         order = orderService.save(order);
@@ -46,13 +49,13 @@ public class OrderRequestUseCaseImpl implements OrderRequestUseCase {
     }
 
     @Override
-    public List<OrderDto> createOrders(List<OrderDto> orderDtos) {
+    public List<OrderResponseDto> createOrders(List<OrderRequest> orderDtos) {
 
         if (orderDtos.size() > 10) {
             throw new InvalidDataException("Exceeds maximum orders of 10 allowed");
         }
 
-        List<OrderDto> returnOrders = new ArrayList<>();
+        List<OrderResponseDto> returnOrders = new ArrayList<>();
 
         for (var orderDto : orderDtos) {
             returnOrders.add(createOrder(orderDto));
@@ -62,14 +65,14 @@ public class OrderRequestUseCaseImpl implements OrderRequestUseCase {
     }
 
     @Override
-    public OrderDto retrieveOrder(String customerNumber) {
+    public OrderResponseDto retrieveOrder(String customerNumber) {
         var order = orderService.findByControlNumber(customerNumber);
 
         return mapper.orderToDto(order);
     }
 
     @Override
-    public Page<OrderDto> filter(OrderFilter filter) {
+    public Page<OrderResponseDto> filter(OrderFilter filter) {
         return orderService.filter(filter).map(mapper::orderToDto);
     }
 

@@ -1,8 +1,8 @@
 package com.testes.infuse.orders.core.domain.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
