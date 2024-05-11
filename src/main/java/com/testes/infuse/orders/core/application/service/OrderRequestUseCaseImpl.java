@@ -2,10 +2,12 @@ package com.testes.infuse.orders.core.application.service;
 
 import com.testes.infuse.orders.core.application.mapper.OrderDtoMapper;
 import com.testes.infuse.orders.core.domain.exception.InvalidDataException;
+import com.testes.infuse.orders.core.domain.repository.filter.OrderFilter;
 import com.testes.infuse.orders.core.domain.service.OrderService;
 import com.testes.infuse.orders.core.port.in.OrderRequestUseCase;
 import com.testes.infuse.orders.core.port.in.dto.OrderDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -64,6 +66,11 @@ public class OrderRequestUseCaseImpl implements OrderRequestUseCase {
         var order = orderService.findByControlNumber(customerNumber);
 
         return mapper.orderToDto(order);
+    }
+
+    @Override
+    public Page<OrderDto> filter(OrderFilter filter) {
+        return orderService.filter(filter).map(mapper::orderToDto);
     }
 
     public BigDecimal getTotalPrice(BigDecimal unitPrice, int quantity) {
