@@ -6,6 +6,8 @@ import com.testes.infuse.orders.infrastructure.persistence.mysql.jpa.OrderJpaRep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class OrderRepositoryAdapter implements OrderRepository {
@@ -16,5 +18,10 @@ public class OrderRepositoryAdapter implements OrderRepository {
     @Override
     public Order save(Order order) {
         return orderJpaRepository.save(order);
+    }
+
+    @Override
+    public Optional<Order> findByControlNumber(String controlNumber) {
+        return orderJpaRepository.findByControlNumber(controlNumber);
     }
 }

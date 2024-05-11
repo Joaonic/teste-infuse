@@ -1,65 +1,54 @@
 package com.testes.infuse.orders.core.domain.service.impl;
 
 import com.testes.infuse.orders.core.domain.entity.Order;
+import com.testes.infuse.orders.core.domain.exception.DuplicateControlNumberException;
+import com.testes.infuse.orders.core.domain.exception.NotFoundException;
+import com.testes.infuse.orders.core.domain.repository.OrderRepository;
 import com.testes.infuse.orders.core.domain.service.OrderService;
-import com.testes.infuse.orders.infrastructure.persistence.mysql.jpa.OrderJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.NavigableMap;
 import java.util.Optional;
-import java.util.TreeMap;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OrderServiceImpl implements OrderService, CommandLineRunner {
+public class OrderServiceImpl implements OrderService {
 
-    private static final NavigableMap<Integer, BigDecimal> discountMap = new TreeMap<>();
 
-    static {
-        discountMap.put(1, BigDecimal.valueOf(1));
-        discountMap.put(5, BigDecimal.valueOf(0.95));
-        discountMap.put(10, BigDecimal.valueOf(0.90));
-    }
-
-    private final OrderJpaRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public Order save(Order order) {
+        if (!customerExists(order.getCustomerCode())) {
+            throw new NotFoundException("Customer not found!");
+        }
+
         checkDuplicateControlNumber(order.getControlNumber());
-        order.setTotalPrice(getTotalPrice(order.getUnitPrice(), order.getQuantity()));
         return orderRepository.save(order);
     }
 
-    public BigDecimal getTotalPrice(BigDecimal unitPrice, int quantity) {
-        BigDecimal base = unitPrice.multiply(BigDecimal.valueOf(quantity));
-        BigDecimal discount = discountMap.floorEntry(quantity).getValue();
-        return base.multiply(discount).setScale(2, RoundingMode.UP);
+    @Override
+    public Order findByControlNumber(String controlNumber) {
+        return orderRepository.findByControlNumber(controlNumber).orElseThrow(() -> new NotFoundException("Order not found!"));
     }
 
     private void checkDuplicateControlNumber(String controlNumber) {
         Optional<Order> existingOrder = orderRepository.findByControlNumber(controlNumber);
         if (existingOrder.isPresent()) {
-            throw new RuntimeException("Control number already registered.");
+            throw new DuplicateControlNumberException("Control number already registered.");
         }
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        Order order = new Order();
+    /**
+     * Method should return if customer exists on DB, customer table is created.
+     * Now it starts from the premise that it exists and is a code from 1 to 10.
+     */
+    private boolean customerExists(String customerCode) {
+        var numberCode = Integer.parseInt(customerCode);
 
-        // Setting fields with sample data
-        order.setControlNumber("123456789");  // Unique control number
-        order.setName("Sample Product");  // Name of the product or order
-        order.setUnitPrice(new BigDecimal("29.99"));  // Price per unit
-        order.setQuantity(7);  // Quantity of items
-        order.setCustomerCode("987654321");
-
-        save(order);
+        return numberCode >= 1 && numberCode <= 10;
     }
+
 }
