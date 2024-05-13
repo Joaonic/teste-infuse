@@ -119,3 +119,4 @@ to avoid port conflicts and ensure data persistence.
 
 - Customer code and order Control Number are treated as string because despite being a numeric identification, it was considered as a String due to the possibility of being sent with 0 on the left.
 - Dockerfile was made with multi-stage and layered construction to make the image lighter and the build faster.
+- SQL script will run automatically on application first run, but you can find them on [DB](src/main/resources/db).
