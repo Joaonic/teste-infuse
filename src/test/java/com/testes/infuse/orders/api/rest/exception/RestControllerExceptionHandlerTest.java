@@ -7,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.validation.BindingResult;
@@ -76,10 +78,12 @@ class RestControllerExceptionHandlerTest {
 
     @Test
     void testHandleMethodArgumentNotValid() {
-        MethodArgumentNotValidException exception = new MethodArgumentNotValidException(null, mock(BindingResult.class));
-        when(exception.getBindingResult().getFieldErrors()).thenReturn(List.of(new FieldError("objectName", "fieldName", "rejectedValue", false, null, null, "defaultMessage")));
+        MethodArgumentNotValidException methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(methodArgumentNotValidException.getBindingResult()).thenReturn(bindingResult);
+        when(methodArgumentNotValidException.getBindingResult().getFieldErrors()).thenReturn(List.of(new FieldError("objectName", "fieldName", "rejectedValue", false, null, null, "defaultMessage")));
 
-        ResponseEntity<Object> response = exceptionHandler.handleMethodArgumentNotValid(exception, null, null, webRequest);
+        ResponseEntity<Object> response = exceptionHandler.handleMethodArgumentNotValid(methodArgumentNotValidException, HttpHeaders.EMPTY, HttpStatusCode.valueOf(400), webRequest);
 
         assertNotNull(response);
         assertNotNull(response.getBody());

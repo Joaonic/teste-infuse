@@ -3,8 +3,8 @@ spring:
     name: orders
   datasource:
     url: ${DATABASE_URL:jdbc:mysql://127.0.0.1:3306/infuse?createDatabaseIfNotExist=true&serverTimezone=UTC}
-    username: root
-    password: root
+    username: ${DB_USER:root}
+    password: ${DB_PASS:root}
   jpa:
     hibernate:
       ddl-auto: none
@@ -15,6 +15,6 @@ spring:
     locations: classpath:db/migration,classpath:db/seed
     outOfOrder: 'true'
     url: ${DATABASE_URL:jdbc:mysql://127.0.0.1:3306/infuse?createDatabaseIfNotExist=true&serverTimezone=UTC}
-    user: root
-    password: root
+    user: ${DB_USER:root}
+    password: ${DB_PASS:root}
     baselineOnMigrate: false

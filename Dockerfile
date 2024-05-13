@@ -7,7 +7,7 @@ WORKDIR /workspace/app
 COPY pom.xml .
 COPY src src
 
-RUN mvn clean install
+RUN mvn clean package
 
 RUN java -Djarmode=layertools -jar target/${JAR_NAME}.jar extract --destination target/
 
