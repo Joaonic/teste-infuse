@@ -29,15 +29,30 @@ code maintenance. The architecture can be divided into the following main layers
   using JPA to interact with the MySQL database. Query specifications are defined
   in [OrderSpecification](src/main/java/com/testes/infuse/orders/infrastructure/persistence/mysql/jpa/specification/OrderSpecification.java).
 
-## Technologies Used
+### Reference Documentation
 
-- **Spring Boot**: Framework to facilitate the configuration and development of new Spring applications.
-- **MySQL**: Database management system for data persistence.
-- **Swagger**: Used for API documentation.
+For further reference, please consider the following sections:
 
-Here is the full section on how to use the application, including instructions for running the project locally with
-Maven and using Docker Compose. This guide assumes that all necessary files, such as the Dockerfile and
-docker-compose.yml, are already configured in the project.
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.2.5/maven-plugin/reference/html/)
+* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/3.2.5/reference/htmlsingle/index.html#appendix.configuration-metadata.annotation-processor)
+* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/3.2.5/reference/htmlsingle/index.html#data.sql.jpa-and-spring-data)
+* [Validation](https://docs.spring.io/spring-boot/docs/3.2.5/reference/htmlsingle/index.html#io.validation)
+* [Spring Web](https://docs.spring.io/spring-boot/docs/3.2.5/reference/htmlsingle/index.html#web)
+* [Mapstruct](https://mapstruct.org/)
+* [Flyway](https://flywaydb.org/)
+
+### Guides
+
+The following guides illustrate how to use some features concretely:
+
+* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
+* [Validation](https://spring.io/guides/gs/validating-form-input/)
+* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
+* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+
 
 ## How to use
 
