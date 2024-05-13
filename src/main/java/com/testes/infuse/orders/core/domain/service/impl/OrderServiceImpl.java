@@ -7,7 +7,6 @@ import com.testes.infuse.orders.core.domain.repository.OrderRepository;
 import com.testes.infuse.orders.core.domain.repository.filter.OrderFilter;
 import com.testes.infuse.orders.core.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class OrderServiceImpl implements OrderService {
 
 

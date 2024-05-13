@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.testes.infuse.orders.core.domain.exception.DuplicateControlNumberException;
 import com.testes.infuse.orders.core.domain.exception.InvalidDataException;
 import com.testes.infuse.orders.core.domain.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,34 +21,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
+@Slf4j
 public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleInternalError(Exception e) {
+        log.error(e.getMessage(), e);
         return new ErrorResponse("Internal Error!", e.getMessage(), null);
     }
 
     @ExceptionHandler(InvalidDataException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidDataException(InvalidDataException e) {
+        log.error(e.getMessage(), e);
         return new ErrorResponse("Invalid data", e.getMessage(), null);
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(NotFoundException e) {
+        log.error(e.getMessage(), e);
         return new ErrorResponse("Not found", e.getMessage(), null);
     }
 
     @ExceptionHandler(DuplicateControlNumberException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDuplicateControlNumberException(DuplicateControlNumberException e) {
+        log.error(e.getMessage(), e);
         return new ErrorResponse("Duplicate control number", e.getMessage(), null);
     }
 
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        log.error(ex.getMessage(), ex);
 
         List<ValidationField> validationFields = new ArrayList<>();
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
