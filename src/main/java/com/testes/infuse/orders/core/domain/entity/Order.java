@@ -15,10 +15,11 @@ public class Order {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    // Despite being a numeric identification, it was considered as a String due to the possibility of being sent with 0 on the left
     private String controlNumber;
 
     @Column(nullable = false, updatable = false)
-    private LocalDate registrationDate = LocalDate.now(); // Default to current date
+    private LocalDate registrationDate = LocalDate.now();
 
     @Column(nullable = false)
     private String name;
@@ -27,9 +28,10 @@ public class Order {
     private BigDecimal unitPrice;
 
     @Column(nullable = false)
-    private int quantity = 1; // Default to 1
+    private int quantity = 1;
 
     @Column(nullable = false)
+    // Despite being a numeric identification, it was considered as a String due to the possibility of being sent with 0 on the left
     private String customerCode;
 
     @Column(nullable = false)

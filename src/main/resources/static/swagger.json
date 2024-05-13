@@ -13,6 +13,28 @@
   "paths": {
     "/orders": {
       "post": {
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "description": "Request mime type.",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "example": "application/json",
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "Response mime type",
+            "required": false,
+            "schema": {
+              "example": "application/xml",
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "order-rest-controller"
         ],
@@ -47,6 +69,10 @@
               "application/xml": {
                 "schema": {
                   "type": "array",
+                  "xml": {
+                    "name": "List",
+                    "wrapped": true
+                  },
                   "items": {
                     "$ref": "#/components/schemas/OrderResponse"
                   }
@@ -57,12 +83,12 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -72,12 +98,12 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -87,12 +113,12 @@
           "409": {
             "description": "Conflict",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -102,12 +128,12 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -130,6 +156,26 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/FilterRequest"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "description": "Request mime type.",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "example": "application/json",
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "Response mime type",
+            "required": false,
+            "schema": {
+              "example": "application/xml",
+              "type": "string"
             }
           }
         ],
@@ -254,6 +300,9 @@
           "unit_price"
         ],
         "type": "object",
+        "xml": {
+          "name": "item"
+        },
         "properties": {
           "id": {
             "type": "integer",

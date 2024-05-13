@@ -9,6 +9,26 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-
+    networks:
+      - orders
+  app:
+    depends_on:
+      - db
+    build:
+      context: .
+      args:
+        JAR_NAME: orders-0.0.1-SNAPSHOT
+    environment:
+      DATABASE_URL: 'jdbc:mysql://db:3306/infuse?createDatabaseIfNotExist=true&serverTimezone=UTC'
+      JAVA_TOOL_OPTIONS: '-Xms512m -Xmx512m'
+    ports:
+      - "8080:8080"
+    networks:
+      - orders
 volumes:
   db_data:
+
+networks:
+  orders:
+    name: orders
+    driver: bridge
